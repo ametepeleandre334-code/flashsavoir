@@ -1,0 +1,23 @@
+
+{
+  "name": "FlashSavoir",
+  "short_name": "FlashSavoir",
+  "description": "Apprends quelque chose d'utile en moins de 5 minutes.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fc",
+  "theme_color": "#263bdb",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

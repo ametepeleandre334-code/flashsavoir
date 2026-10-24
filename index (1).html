@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head><link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#263bdb">
+  <title>FlashSavoir - Apprends chaque jour</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --blue: #263bdb;
+      --light-blue: #eef1ff;
+      --text: #17213a;
+      --muted: #6b7280;
+      --white: #ffffff;
+      --background: #f5f7fc;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    header {
+      background: var(--white);
+      padding: 18px;
+      border-bottom: 1px solid #e9ecf5;
+    }
+
+    .topbar {
+      max-width: 1050px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      color: var(--blue);
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #17213a;
+    }
+
+    .daily {
+      background: var(--light-blue);
+      color: var(--blue);
+      padding: 9px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 20px 16px 35px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #263bdb, #5369f4);
+      color: white;
+      border-radius: 24px;
+      padding: 28px 22px;
+      margin: 8px 0 24px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.85;
+    }
+
+    .hero h1 {
+      font-size: clamp(27px, 6vw, 40px);
+      line-height: 1.15;
+      margin: 12px 0;
+    }
+
+    .hero p {
+      line-height: 1.6;
+      max-width: 480px;
+      margin-bottom: 20px;
+    }
+
+    .hero button {
+      background: white;
+      color: var(--blue);
+      border: none;
+      padding: 13px 17px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 24px 0 14px;
+    }
+
+    .section-title h2 {
+      font-size: 21px;
+      margin: 0;
+    }
+
+    .section-title small {
+      color: var(--muted);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      padding: 15px 10px;
+      border: 1px solid #e9ecf5;
+      border-radius: 15px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      color: var(--blue);
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .search {
+      width: 100%;
+      padding: 15px;
+      background: white;
+      border: 1px solid #dfe3ef;
+      border-radius: 13px;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: var(--blue);
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 14px 0 6px;
+    }
+
+    .category {
+      white-space: nowrap;
+      padding: 10px 14px;
+      border-radius: 22px;
+      border: 1px solid #e0e4ef;
+      background: white;
+      color: #46506a;
+    }
+
+    .category.active {
+      color: white;
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .lessons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e9ecf5;
+      border-radius: 17px;
+      overflow: hidden;
+    }
+
+    .card-top {
+      min-height: 90px;
+      padding: 17px;
+      background: var(--light-blue);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .emoji {
+      font-size: 35px;
+    }
+
+    .duration {
+      font-size: 11px;
+      color: var(--blue);
+      background: white;
+      padding: 7px 9px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .tag {
+      color: var(--blue);
+      text-transform: uppercase;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .card h3 {
+      font-size: 17px;
+      margin: 9px 0;
+      line-height: 1.35;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .read {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: var(--blue);
+      color: white;
+      font-weight: bold;
+    }
+
+    .read.done {
+      background: #e5f8ed;
+      color: #187344;
+    }
+
+    .lesson-detail {
+      display: none;
+      padding: 0 16px 17px;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .lesson-detail.open {
+      display: block;
+    }
+
+    .lesson-detail h4 {
+      color: var(--blue);
+      margin-bottom: 5px;
+    }
+
+    .lesson-detail p {
+      color: #4b5568;
+    }
+
+    .complete {
+      background: #e8f8ef;
+      color: #187344;
+      border: none;
+      border-radius: 10px;
+      padding: 11px;
+      width: 100%;
+      font-weight: bold;
+    }
+
+    .empty {
+      display: none;
+      padding: 25px 5px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 25px 15px;
+    }
+
+    @media (max-width: 520px) {
+      .lessons {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 25px 19px;
+      }
+
+      .stats {
+        gap: 7px;
+      }
+
+      .stat strong {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="topbar">
+      <div class="logo">⚡ Flash<span>Savoir</span></div>
+      <div class="daily">LE SAVOIR EN 5 MIN</div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="eyebrow">Bienvenue sur FlashSavoir</div>
+      <h1>Une petite leçon.<br>Un grand progrès.</h1>
+      <p>
+        Découvre des connaissances utiles, développe tes
+        compétences et apprends quelque chose de nouveau
+        chaque jour.
+      </p>
+      <button id="startButton">Découvrir les leçons ↓</button>
+    </section>
+
+    <div class="section-title">
+      <h2>Mon apprentissage</h2>
+    </div>
+
+    <section class="stats">
+      <div class="stat">
+        <strong id="totalCount">6</strong>
+        <span>Leçons disponibles</span>
+      </div>
+      <div class="stat">
+        <strong id="doneCount">0</strong>
+        <span>Leçons terminées</span>
+      </div>
+      <div class="stat">
+        <strong id="progressCount">0%</strong>
+        <span>Progression</span>
+      </div>
+    </section>
+
+    <div class="section-title" id="lessonHeading">
+      <h2>Explore les connaissances</h2>
+    </div>
+
+    <input
+      class="search"
+      id="search"
+      type="search"
+      placeholder="🔎 Rechercher une leçon..."
+    >
+
+    <nav class="categories">
+      <button class="category active" data-category="Tous">Tout</button>
+      <button class="category" data-category="Technologie">Technologie</button>
+      <button class="category" data-category="Vie pratique">Vie pratique</button>
+      <button class="category" data-category="Productivité">Productivité</button>
+      <button class="category" data-category="Marketing">Marketing</button>
+    </nav>
+
+    <section class="lessons" id="lessons">
+
+      <article class="card" data-category="Technologie" data-id="cloud">
+        <div class="card-top">
+          <span class="emoji">☁️</span>
+          <span class="duration">2 min</span>
+        </div>
+        <div class="card-body">
+          <span class="tag">Technologie</span>
+          <h3>Comprendre le cloud</h3>
+          <p>Découvre comment conserver tes fichiers sur Internet.</p>
+          <button class="read">Lire la leçon →</button>
+        </div>
+        <div class="lesson-detail">
+          <h4>Qu'est-ce que le cloud ?</h4>
+          <p>Le cloud permet de stocker des fichiers sur des serveurs accessibles par Internet.</p>
+          <h4>Exemple concret</h4>
+          <p>Google Drive te permet de retrouver tes documents depuis différents appareils.</p>
+          <h4>À retenir</h4>
+          <p>Protège toujours ton compte avec un mot de passe solide.</p>
+          <button class="complete">✓ Marquer comme terminée</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Vie pratique" data-id="budget">
+        <div class="card-top">
+          <span class="emoji">💰</span>
+          <span class="duration">3 min</span>
+        </div>
+        <div class="card-body">
+          <span class="tag">Vie pratique</span>
+          <h3>Mieux gérer son argent</h3>
+          <p>Apprends à suivre tes dépenses et à préparer tes projets.</p>
+          <button class="read">Lire la leçon →</button>
+        </div>
+        <div class="lesson-detail">
+          <h4>Étape 1 : connaître ses revenus</h4>
+          <p>Note l'argent que tu reçois pendant une période donnée.</p>
+          <h4>Étape 2 : suivre ses dépenses</h4>
+          <p>Écris tes achats pour comprendre où va ton argent.</p>
+          <h4>Étape 3 : définir ses priorités</h4>
+          <p>Distingue les besoins essentiels des envies et prépare un budget réaliste.</p>
+          <button class="complete">✓ Marquer comme terminée</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Productivité" data-id="temps">
+        <div class="card-top">
+          <span class="emoji">🎯</span>
+          <span class="duration">2 min</span>
+        </div>
+        <div class="card-body">
+          <span class="tag">Productivité</span>
+          <h3>Organiser sa journée</h3>
+          <p>Une méthode simple pour avancer sur tes priorités.</p>
+          <button class="read">Lire la leçon →</button>
+        </div>
+        <div class="lesson-detail">
+          <h4>La méthode des trois priorités</h4>
+          <p>1. Note les tâches à réaliser.</p>
+          <p>2. Choisis les trois plus importantes.</p>
+          <p>3. Concentre-toi sur une tâche à la fois.</p>
+          <h4>Conseil</h4>
+          <p>Prévois des pauses et garde du temps pour les imprévus.</p>
+          <button class="complete">✓ Marquer comme terminée</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Technologie" data-id="securite">
+        <div class="card-top">
+          <span class="emoji">🔐</span>
+          <span class="duration">3 min</span>
+        </div>
+        <div class="card-body">
+          <span class="tag">Technologie</span>
+          <h3>Protéger ses comptes</h3>
+          <p>Les bons réflexes pour sécuriser tes informations.</p>
+          <button class="read">Lire la leçon →</button>
+        </div>
+        <div class="lesson-detail">
+          <h4>Trois bons réflexes</h4>
+          <p>1. Utilise des mots de passe longs et différents.</p>
+          <p>2. Active la double authentification quand elle est disponible.</p>
+          <p>3. Méfie-toi des liens suspects reçus par message.</p>
+          <h4>À retenir</h4>
+          <p>Ne communique jamais tes codes confidentiels à un inconnu.</p>
+          <button class="complete">✓ Marquer comme terminée</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Marketing" data-id="client">
+        <div class="card-top">
+          <span class="emoji">🛍️</span>
+          <span class="duration">3 min</span>
+        </div>
+        <div class="card-body">
+          <span class="tag">Marketing</span>
+          <h3>Comprendre son client</h3>
+          <p>Découvre pourquoi connaître ses clients aide à mieux vendre.</p>
+          <button class="read">Lire la leçon →</button>
+        </div>
+        <div class="lesson-detail">
+          <h4>Qui est ton client ?</h4>
+          <p>Il s'agit de la personne susceptible d'acheter ton produit ou ton service.</p>
+          <h4>Que faut-il connaître ?</h4>
+          <p>Ses besoins, ses difficultés, ses habitudes et son budget.</p>
+          <h4>Exemple</h4>
+          <p>Un vendeur de fournitures scolaires peut proposer des kits adaptés aux élèves.</p>
+          <button class="complete">✓ Marquer comme terminée</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="Vie pratique" data-id="habitudes">
+        <div class="card-top">
+          <span class="emoji">🌱</span>
+          <span class="duration">2 min</span>
+        </div>
+        <div class="card-body">
+          <span class="tag">Vie pratique</span>
+          <h3>Construire une bonne habitude</h3>
+          <p>Comment commencer petit et rester régulier.</p>
+          <button class="read">Lire la leçon →</button>
+        </div>
+        <div class="lesson-detail">
+          <h4>Commence simplement</h4>
+          <p>Choisis une petite action que tu peux répéter régulièrement.</p>
+          <h4>Associe-la à une routine</h4>
+          <p>Par exemple, révise quelques minutes après avoir terminé tes cours.</p>
+          <h4>Observe tes progrès</h4>
+          <p>Note tes efforts et reprends ta routine après une interruption.</p>
+          <button class="complete">✓ Marquer comme terminée</button>
+        </div>
+      </article>
+
+    </section>
+
+    <p class="empty" id="empty">
+      Aucune leçon trouvée. Essaie un autre mot.
+    </p>
+
+  </main>
+
+  <footer>
+    ⚡ FlashSavoir — Apprendre un peu, progresser chaque jour.
+  </footer>
+
+  <script>
+    const cards = [...document.querySelectorAll(".card")];
+    const categoryButtons = [
+      ...document.querySelectorAll(".category")
+    ];
+    const search = document.getElementById("search");
+
+    let selectedCategory = "Tous";
+    let completed = [];
+
+    try {
+      completed = JSON.parse(
+        localStorage.getItem("flashsavoir-completed") || "[]"
+      );
+      if (!Array.isArray(completed)) completed = [];
+    } catch (error) {
+      completed = [];
+    }
+
+    function updateStats() {
+      document.getElementById("totalCount").textContent = cards.length;
+      document.getElementById("doneCount").textContent = completed.length;
+
+      const percent = Math.round(
+        completed.length / cards.length * 100
+      );
+
+      document.getElementById("progressCount").textContent = percent + "%";
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(
+          "flashsavoir-completed",
+          JSON.stringify(completed)
+        );
+      } catch (error) {
+        // La progression reste visible pendant cette session.
+      }
+    }
+
+    function updateCards() {
+      const query = search.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const matchesCategory =
+          selectedCategory === "Tous" ||
+          card.dataset.category === selectedCategory;
+
+        const matchesSearch =
+          card.textContent.toLowerCase().includes(query);
+
+        const visible = matchesCategory && matchesSearch;
+        card.style.display = visible ? "" : "none";
+
+        if (visible) visibleCount++;
+      });
+
+      document.getElementById("empty").style.display =
+        visibleCount ? "none" : "block";
+    }
+
+    function updateButtons() {
+      cards.forEach(card => {
+        const button = card.querySelector(".read");
+        const isDone = completed.includes(card.dataset.id);
+
+        button.textContent = isDone
+          ? "✓ Leçon terminée"
+          : "Lire la leçon →";
+
+        button.classList.toggle("done", isDone);
+      });
+    }
+
+    categoryButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        selectedCategory = button.dataset.category;
+
+        categoryButtons.forEach(item =>
+          item.classList.toggle("active", item === button)
+        );
+
+        updateCards();
+      });
+    });
+
+    search.addEventListener("input", updateCards);
+
+    cards.forEach(card => {
+      const readButton = card.querySelector(".read");
+      const detail = card.querySelector(".lesson-detail");
+      const completeButton = card.querySelector(".complete");
+
+      readButton.addEventListener("click", () => {
+        detail.classList.toggle("open");
+        readButton.textContent = detail.classList.contains("open")
+          ? "Fermer la leçon ↑"
+          : completed.includes(card.dataset.id)
+            ? "✓ Leçon terminée"
+            : "Lire la leçon →";
+      });
+
+      completeButton.addEventListener("click", () => {
+        const id = card.dataset.id;
+
+        if (!completed.includes(id)) {
+          completed.push(id);
+        }
+
+        saveProgress();
+        updateStats();
+        updateButtons();
+
+        completeButton.textContent = "✓ Bravo, leçon terminée !";
+      });
+    });
+
+    document.getElementById("startButton").addEventListener("click", () => {
+      document.getElementById("lessonHeading").scrollIntoView({
+        behavior: "smooth"
+      });
+    });
+
+    updateStats();
+    updateButtons();
+    updateCards();
+  </script>
+
+</body>
+</html>
+
